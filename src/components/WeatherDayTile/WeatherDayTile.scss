@@ -1,0 +1,10 @@
+@import 'variables.scss';
+
+.weather-day-tile {
+    text-align: center;
+    background-color: $weather-tile-background-color;
+    display: inline-block;
+    padding: 2em 3em;
+    border-radius: 4px;
+    box-shadow: $card-shadow;
+}
