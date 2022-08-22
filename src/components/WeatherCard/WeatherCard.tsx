@@ -1,5 +1,5 @@
 import WeatherIcon from "components/WeatherIcon";
-import { Weather } from "types/types";
+import { Weather } from "types";
 import "./WeatherCard.scss";
 
 interface CardProps {
@@ -15,9 +15,20 @@ const WeatherCard = ({ location, weather, highlighted }: CardProps) => {
       role="listitem"
     >
       <h3>{weather?.dt_txt || "Weather in"}</h3>
-      <p>
-        {location.city}, {location.countryCode}
-      </p>
+
+      {!location.geolocation ? (
+        <p>
+          {location.city}, {location.countryCode}
+        </p>
+      ) : (
+        <>
+          <p>My Location</p>
+          <p>
+            ( {location.geolocation.latitude.toFixed(3)},
+            {location.geolocation.longitude.toFixed(3)})
+          </p>
+        </>
+      )}
 
       <WeatherIcon icon={weather?.weather[0]?.icon} />
       <p>{weather?.weather[0].main}</p>

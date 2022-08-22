@@ -3,11 +3,14 @@ import { WeatherApiClient } from "api/WeatherApiClient";
 import "./WeatherDayTile.scss";
 import Loader from "components/Loader";
 import WeatherCard from "components/WeatherCard";
-import { Weather } from "types/types";
+import { Weather } from "types";
+import { Query } from "types";
 
 type State = {
   data: any;
+  persistentData: any;
   isLoaded: boolean;
+  isGeolocationLoaded?: boolean;
 };
 
 class WeatherDayTile extends React.Component<Weather, State> {
@@ -18,27 +21,61 @@ class WeatherDayTile extends React.Component<Weather, State> {
 
     this.state = {
       data: null,
+      persistentData: null,
       isLoaded: false,
+      isGeolocationLoaded: false,
     };
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(this.props, this.state);
   }
 
-  fetchData = async () => {
-    const { city, countryCode } = this.props;
+  componentWillUpdate(nextProps: Weather, nextState: State) {
+    if (nextProps.geolocation?.latitude === this.props.geolocation?.latitude)
+      return;
+    if (nextProps.geolocation?.show) {
+      if (this.state.isGeolocationLoaded) {
+        const { persistentData, data } = this.state;
+        this.setState({
+          ...this.state,
+          persistentData: data,
+          data: persistentData,
+        });
+        return;
+      }
+      this.fetchData({ ...nextProps }, { ...nextState });
+      return;
+    }
 
-    const query = {
+    const { persistentData } = this.state;
+
+    this.setState({
+      ...this.state,
+      persistentData: nextState.data,
+      data: persistentData,
+    });
+  }
+
+  fetchData = async (props: Weather, state: State) => {
+    const { city, countryCode, geolocation } = props;
+    let query: Query = {
       q: `${city},${countryCode}`,
       units: "metric",
     };
-
+    if (props.geolocation?.show) {
+      query = {
+        lat: geolocation?.latitude,
+        lon: geolocation?.longitude,
+      };
+    }
     const response = await this.apiClient.get("/weather", query);
-
+    const { data } = this.state;
     this.setState({
-      data: response,
       isLoaded: true,
+      persistentData: data,
+      data: response,
+      isGeolocationLoaded: geolocation?.latitude ? true : false,
     });
   };
 
