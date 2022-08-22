@@ -1,18 +1,32 @@
-@import 'variables.scss';
+@import "variables.scss";
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: $background-color;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $background-color;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.weather-day-tile {
+  text-align: center;
+  background-color: $weather-tile-background-color;
+  display: inline-block;
+  padding: 2em 3em;
+  border-radius: 4px;
+  box-shadow: $card-shadow;
+  min-height: 17.5rem;
+  width: 10rem;
+}
+.highlight-card {
+  scale: 1.06;
 }
 
 // Based on Penneo's Button
@@ -20,33 +34,33 @@ $penneo-dark-blue: #04224c;
 $penneo-highlight-blue: #3f99f1;
 
 button {
-    transition: 0.1s all;
-    outline: 0;
-    position: relative;
-    border-radius: 3px;
-    border: 1px solid transparent;
-    background-color: transparent;
-    font-weight: bold;
-    white-space: nowrap;
-    text-transform: none;
-    cursor: pointer;
-    display: inline-flex;
-    font-size: 1rem;
-    align-items: center;
-    justify-content: center;
-    padding: 1em 2em;
-    border-style: solid;
-    border-width: 1px;
+  transition: 0.1s all;
+  outline: 0;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: none;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 2em;
+  border-style: solid;
+  border-width: 1px;
 
-    background-color: transparentize($penneo-highlight-blue, 0.95);
-    border-color: $penneo-highlight-blue;
-    color: darken($penneo-highlight-blue, 25);
+  background-color: transparentize($penneo-highlight-blue, 0.95);
+  border-color: $penneo-highlight-blue;
+  color: darken($penneo-highlight-blue, 25);
 
-    &:hover {
-        background-color: transparentize($penneo-highlight-blue, 0.85);
-    }
+  &:hover {
+    background-color: transparentize($penneo-highlight-blue, 0.85);
+  }
 
-    &:active {
-        background-color: transparentize($penneo-highlight-blue, 0.65);
-    }
+  &:active {
+    background-color: transparentize($penneo-highlight-blue, 0.65);
+  }
 }

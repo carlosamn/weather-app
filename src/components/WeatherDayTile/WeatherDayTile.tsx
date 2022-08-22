@@ -1,76 +1,56 @@
-import React from 'react';
-import WeatherIcon from 'components/WeatherIcon';
-import { WeatherApiClient } from 'api/WeatherApiClient';
-import './WeatherDayTile.scss';
-
-type Props = {
-    city: string;
-    countryCode: string;
-};
+import React from "react";
+import { WeatherApiClient } from "api/WeatherApiClient";
+import "./WeatherDayTile.scss";
+import Loader from "components/Loader";
+import WeatherCard from "components/WeatherCard";
+import { Weather } from "types/types";
 
 type State = {
-    data: any;
-    isLoaded: boolean;
+  data: any;
+  isLoaded: boolean;
 };
 
-class WeatherDayTile extends React.Component<Props, State> {
-    private apiClient = new WeatherApiClient();
+class WeatherDayTile extends React.Component<Weather, State> {
+  private apiClient = new WeatherApiClient();
 
-    constructor(props: Props) {
-        super(props);
+  constructor(props: Weather) {
+    super(props);
 
-        this.state = {
-            data: null,
-            isLoaded: false,
-        };
-    }
+    this.state = {
+      data: null,
+      isLoaded: false,
+    };
+  }
 
-    componentDidMount() {
-        this.fetchData();
-    }
+  componentDidMount() {
+    this.fetchData();
+  }
 
-    fetchData = async () => {
-        const { city, countryCode } = this.props;
+  fetchData = async () => {
+    const { city, countryCode } = this.props;
 
-        const query = {
-            q: `${city},${countryCode}`,
-            units: 'metric',
-        };
-
-        const response = await this.apiClient.get('/weather', query);
-
-        this.setState({
-            data: response,
-            isLoaded: true,
-        });
+    const query = {
+      q: `${city},${countryCode}`,
+      units: "metric",
     };
 
-    render() {
-        const { data, isLoaded } = this.state;
+    const response = await this.apiClient.get("/weather", query);
 
-        if (!isLoaded) {
-            return <h3>Loading...</h3>;
-        }
+    this.setState({
+      data: response,
+      isLoaded: true,
+    });
+  };
 
-        const [primaryWeather] = data.weather;
+  render() {
+    const { data, isLoaded } = this.state;
 
-        return (
-            <div className="weather-day-tile">
-                <h3>Weather in</h3>
-                <p>
-                    {this.props.city}, {this.props.countryCode}
-                </p>
-
-                <WeatherIcon icon={primaryWeather.icon} />
-                <p>{primaryWeather.main}</p>
-
-                <p>
-                    <b>Temp:</b>&nbsp;
-                    {data.main.temp}°
-                </p>
-            </div>
-        );
+    if (!isLoaded) {
+      return <Loader />;
     }
+
+    return <WeatherCard location={this.props} weather={data} highlighted />;
+  }
 }
 
 export default WeatherDayTile;

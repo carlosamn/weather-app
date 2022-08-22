@@ -1,31 +1,43 @@
-import WeatherDayTile from 'components/WeatherDayTile';
-import PenneoLogo from 'resources/logo.png';
-import './WeatherApp.scss';
+import WeatherForecast from "components/WeatherForecast";
+import WeatherDayTile from "components/WeatherDayTile";
+import { useState } from "react";
+import PenneoLogo from "resources/logo.png";
+import "./WeatherApp.scss";
 
 function WeatherApp() {
-    return (
-        <div className="weather-app">
-            <header className="weather-app-header">
-                <img src={PenneoLogo} alt="Penneo Logo" width={120} />
-            </header>
+  const [showForecast, setShowForecast] = useState(false);
 
-            <div className="weather-app-container">
-                <div className="weather-app-actions">
-                    <button
-                        onClick={() =>
-                            console.log('Here goes real functionality :)')
-                        }>
-                        Show forecast
-                    </button>
-                </div>
+  const handleForecastEvent = () => {
+    setShowForecast(!showForecast);
+  };
 
-                {/* Display a day of weather */}
-                <WeatherDayTile city={'South Park'} countryCode={'US'} />
+  return (
+    <div className="weather-app">
+      <header className="weather-app-header">
+        <img src={PenneoLogo} alt="Penneo Logo" width={120} />
+      </header>
 
-                {/* @todo: Add a forecast for next 3 days */}
-            </div>
+      <div className="weather-app-container">
+        <div className="weather-app-actions">
+          <button onClick={handleForecastEvent}>
+            {!showForecast ? "Show forecast" : "Hide forecast"}
+          </button>
         </div>
-    );
+
+        <section className="weather-card-conteiner">
+          {/* Display a day of weather */}
+          <WeatherDayTile city={"South Park"} countryCode={"US"} />
+
+          {/* @todo: Add a forecast for next 3 days */}
+          <WeatherForecast
+            showForecast={showForecast}
+            city={"South Park"}
+            countryCode={"US"}
+          />
+        </section>
+      </div>
+    </div>
+  );
 }
 
 export default WeatherApp;
