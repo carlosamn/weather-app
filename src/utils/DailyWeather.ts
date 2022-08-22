@@ -1,9 +1,12 @@
-export const dailyWeather = (response: any): any[] => {
+import { UnitWeather } from "types";
+
+export const dailyWeather = (response: any): UnitWeather[] => {
   return response?.list
     .filter(
-      (day: any, index: number) => index === 6 || index === 14 || index === 22
+      (day: UnitWeather, index: number) =>
+        index === 6 || index === 14 || index === 22
     )
-    .map((day: any, index: number) => {
+    .map((day: UnitWeather, index: number) => {
       day.dt_txt =
         index === 0
           ? "Tomorrow"
